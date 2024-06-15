@@ -80,22 +80,22 @@ function ImageCaptureModal() {
       console.error("Video element not found");
       return;
     }
-  
+
     const canvas = document.createElement("canvas");
-  
+
     const videoWidth = videoRef.current.videoWidth;
     const videoHeight = videoRef.current.videoHeight;
-    
+
     // Calculate the dimensions and coordinates to center the capture
     const newWidth = 494;
     const newHeight = 294;
     const centerX = videoWidth / 2 - newWidth / 2;
     const centerY = videoHeight / 2 - newHeight / 2;
-  
+
     canvas.width = newWidth;
     canvas.height = newHeight;
     const context = canvas.getContext("2d");
-  
+
     // Ensure the video is ready
     if (videoWidth > 0 && videoHeight > 0) {
       setTimeout(() => {
@@ -107,16 +107,26 @@ function ImageCaptureModal() {
       console.error("Video dimensions not available");
     }
   };
-  
-  
+
+  const capturePhotoForInput = (e) => {
+    setImage2(URL.createObjectURL(e.target.files[0]));
+  };
 
   return (
     <div>
       <video ref={videoRef} autoPlay playsInline width="300px" height="200px" />
-      <button onClick={capturePhoto}>Capture</button>
-      <img src={image1} alt="" />
-      hiii
-      {image2 && <img src={URL.createObjectURL(image2)} alt="" />}
+      <button onClick={capturePhoto}>Capture for Image1</button>
+      <input type="file"  onChange={capturePhotoForInput} />
+      {image1 && (
+        <div>
+          <img src={image1} alt="Captured Image1" />
+        </div>
+      )}
+      {image2 && (
+        <div>
+          <img src={image2} alt="Captured Image2" />
+        </div>
+      )}
     </div>
   );
 }
