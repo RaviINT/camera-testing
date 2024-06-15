@@ -77,40 +77,26 @@ function ImageCaptureModal() {
 
   const capturePhoto = () => {
     const canvas = document.createElement("canvas");
-
+  
     const videoWidth = videoRef.current.videoWidth;
     const videoHeight = videoRef.current.videoHeight;
+    
     // Calculate the dimensions and coordinates to center the capture
     const newWidth = 494;
     const newHeight = 294;
     const centerX = videoWidth / 2 - newWidth / 2;
     const centerY = videoHeight / 2 - newHeight / 2;
-
+  
     canvas.width = newWidth;
     canvas.height = newHeight;
     canvas.getContext("2d").drawImage(videoRef.current, centerX, centerY, newWidth, newHeight, 0, 0, newWidth, newHeight);
-
+  
     const capturedPhoto = canvas.toDataURL("image/jpeg");
-    // console.log(canvas.width, canvas.height, capturedPhoto);
-    // Convert base64 to Blob
-    // console.log(capturedPhoto);
-    const byteString = atob(capturedPhoto.split(",")[1]);
-    const mimeString = capturedPhoto.split(",")[0].split(":")[1].split(";")[0];
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const uintArray = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      uintArray[i] = byteString.charCodeAt(i);
-    }
-
-    const blob = new Blob([arrayBuffer], { type: mimeString });
-
-    // Create a file from the blob
-    const file = new File([blob], "capturedPhoto.jpeg", { type: mimeString });
+  
+    // Store the captured image in the state
     setImage1(capturedPhoto);
-    setImage2(file);
-    // handleChange(multi ? capturedPhoto : file);
   };
+  
 
   return (
     <div>
