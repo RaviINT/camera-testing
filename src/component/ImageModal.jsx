@@ -76,6 +76,11 @@ function ImageCaptureModal() {
   };
 
   const capturePhoto = () => {
+    if (!videoRef.current) {
+      console.error("Video element not found");
+      return;
+    }
+  
     const canvas = document.createElement("canvas");
   
     const videoWidth = videoRef.current.videoWidth;
@@ -89,13 +94,20 @@ function ImageCaptureModal() {
   
     canvas.width = newWidth;
     canvas.height = newHeight;
-    canvas.getContext("2d").drawImage(videoRef.current, centerX, centerY, newWidth, newHeight, 0, 0, newWidth, newHeight);
+    const context = canvas.getContext("2d");
   
-    const capturedPhoto = canvas.toDataURL("image/jpeg");
-  
-    // Store the captured image in the state
-    setImage1(capturedPhoto);
+    // Ensure the video is ready
+    if (videoWidth > 0 && videoHeight > 0) {
+      setTimeout(() => {
+        context.drawImage(videoRef.current, centerX, centerY, newWidth, newHeight, 0, 0, newWidth, newHeight);
+        const capturedPhoto = canvas.toDataURL("image/jpeg");
+        setImage1(capturedPhoto);
+      }, 100); // Adding a small delay to ensure the video frame is ready
+    } else {
+      console.error("Video dimensions not available");
+    }
   };
+  
   
 
   return (
